@@ -14,7 +14,7 @@ function bmore_budget_viz_init() {
   drupal_add_css(libraries_get_path('c3') . '/c3.min.css');
 
   // Load the JS to render the visualizations.
-  drupal_add_js(drupal_get_path('module', 'fts_viz') . '/js/viz.js', array('scope' => 'footer'));
+  drupal_add_js(drupal_get_path('module', 'bmore_budget_viz') . '/js/viz.js', array('scope' => 'footer'));
 }
 
 /**
