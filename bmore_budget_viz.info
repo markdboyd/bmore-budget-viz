@@ -1,0 +1,8 @@
+name = Baltimore Budget Visualizations
+description = Create visualizations for Baltimore budget data
+core = 7.x
+version = 7.x-1.0
+project = bmore_budget_viz
+
+dependencies[] = ctools
+dependencies[] = panels

@@ -1,0 +1,27 @@
+<?php
+/**
+ * @file
+ * Code for the Bmore Budget Viz module.
+ */
+
+/**
+ * Implements hook_init().
+ */
+function bmore_budget_viz_init() {
+  // Add D3 & C3 libraries.
+  drupal_add_js(libraries_get_path('d3') . '/d3.min.js', array('scope' => 'footer', 'weight' => 0));
+  drupal_add_js(libraries_get_path('c3') . '/c3.min.js', array('scope' => 'footer'));
+  drupal_add_css(libraries_get_path('c3') . '/c3.min.css');
+
+  // Load the JS to render the visualizations.
+  drupal_add_js(drupal_get_path('module', 'fts_viz') . '/js/viz.js', array('scope' => 'footer'));
+}
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function bmore_budget_viz_ctools_plugin_directory($module, $plugin_type) {
+  if ($module == 'ctools' && !empty($plugin_type)) {
+    return "plugins/$plugin_type";
+  }
+}
