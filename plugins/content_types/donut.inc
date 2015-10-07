@@ -46,7 +46,7 @@ function bmore_budget_data_donut_viz_render($subtype, $conf, $args, $contexts) {
 
   $fiscal_year = $contexts[0]->data;
 
-  $pane->title = $conf['override_title'] ? $conf['override_title_text'] : t('Baltimore Operating Budget - @year', array(
+  $pane->title = $conf['override_title'] ? $conf['override_title_text'] : t('Top 10 Departments by Approved Funding for FY @year', array(
       '@year' => $fiscal_year,
     )
   );
