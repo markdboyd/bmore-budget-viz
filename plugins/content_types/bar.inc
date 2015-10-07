@@ -6,7 +6,7 @@
  */
 
 $plugin = array(
-  'title' => t('Donut chart - Baltimore operating budget'),
+  'title' => t('Bar chart - Baltimore operating budget'),
   'category' => t('Bmore'),
   'description' => t('Renders a bar chart visualization of budget data.'),
   'edit form' => 'bmore_budget_data_bar_viz_edit_form',
@@ -21,7 +21,13 @@ $plugin = array(
  * Admin title callback.
  */
 function bmore_budget_data_bar_viz_admin_title($subtype, $conf, $context = NULL) {
-  return bmore_budget_data_content_type_plugin_admin_title($subtype, $conf, $context, 'Bar chart - Baltimore operating budget');
+  $title = 'Bar chart - Baltimore operating budget';
+
+  if ($conf['override_title'] && !empty($conf['override_title_text'])) {
+    $title = filter_xss_admin($conf['override_title_text']);
+  }
+
+  return $title;
 }
 
 /**

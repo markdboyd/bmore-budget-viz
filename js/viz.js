@@ -1,20 +1,21 @@
 (function ($) {
 
-  // Chart of top 5 recipients for a donor.
-  Drupal.behaviors.donor_top5_recipients_chart = {
+  // Donut chart of budget data.
+  Drupal.behaviors.bmore_budget_donut = {
     attach: function (context, settings) {
-      var chart_id = settings.donor_top5_recipients_chart_id;
-      var chart_json = settings.donor_top5_recipients_json;
+      var chart_id = settings.bmore_budget_data_chart_id;
+      var chart_json = settings.bmore_budget_data_json;
 
       if (chart_id && chart_json) {
         chart_id = '#' + chart_id;
 
-        var additional_opts = general_donut_chart_opts(chart_json);
-        var donor_names = Object.keys(settings.donor_top5_recipients_json);
+        var additional_opts = {};
 
-        $(chart_id, context).once('donor-top5-recipients-chart', function (){
+        // var additional_opts = general_donut_chart_opts(chart_json);
+        // var department_names = Object.keys(settings.donor_top5_recipients_json);
+
+        $(chart_id, context).once('bmore-budget-donut-chart', function (){
           var chart = generate_donut_chart(chart_id, chart_json, additional_opts);
-          generate_legend('.pane-donor-top5-recipients-chart', chart, donor_names);
         });
       }
     }
@@ -35,12 +36,7 @@
       },
       legend: {
         position: 'right'
-      },
-      tooltip: {
-        format: {
-          value: formatCurrencyTooltip
-        }
-      },
+      }
     };
 
     // Get additional options.

@@ -25,3 +25,23 @@ function bmore_budget_viz_ctools_plugin_directory($module, $plugin_type) {
     return "plugins/$plugin_type";
   }
 }
+
+function bmore_budget_viz_get_data($fiscal_year) {
+  // Info on using API: http://dev.socrata.com/docs/queries.html.
+  $data_url = format_string('https://data.baltimorecity.gov/resource/g5wn-pq7y.json?fiscal_year=@fiscal_year&$select=department,sum%28approved_amount%29%20AS%20total&$group=department&$order=total%20DESC&$limit=10', array(
+      '@fiscal_year' => $fiscal_year
+    )
+  );
+
+  $response = file_get_contents($data_url);
+  $response_data = json_decode($response);
+  $viz_data = array();
+
+  foreach ($response_data as $idx => $response) {
+    $department = $response->department;
+    $total = $response->total;
+    $viz_data[$department] = $total;
+  }
+
+  return $viz_data;
+}
