@@ -6,7 +6,7 @@
  */
 
 $plugin = array(
-  'title' => t('Donut chart - Baltimore operating budget'),
+  'title' => t('Donut chart - Baltimore budget data'),
   'category' => t('Bmore'),
   'description' => t('Renders a donut chart visualization of budget data.'),
   'edit form' => 'bmore_budget_data_donut_viz_edit_form',
@@ -21,7 +21,7 @@ $plugin = array(
  * Admin title callback.
  */
 function bmore_budget_data_donut_viz_admin_title($subtype, $conf, $context = NULL) {
-  $title = 'Donut chart - Baltimore operating budget';
+  $title = 'Donut chart - Baltimore budget data';
 
   if ($conf['override_title'] && !empty($conf['override_title_text'])) {
     $title = filter_xss_admin($conf['override_title_text']);
@@ -43,7 +43,6 @@ function bmore_budget_data_donut_viz_edit_form($form, &$form_state) {
  */
 function bmore_budget_data_donut_viz_render($subtype, $conf, $args, $contexts) {
   $pane = new stdClass();
-
   $fiscal_year = $contexts[0]->data;
 
   $pane->title = $conf['override_title'] ? $conf['override_title_text'] : t('Top 10 Departments by Approved Funding for FY @year', array(
@@ -57,13 +56,14 @@ function bmore_budget_data_donut_viz_render($subtype, $conf, $args, $contexts) {
     return '';
   }
 
-  // Options for C3js chart.
+  // Set chart ID.
   $chart_id = 'bmore-budget-donut-chart';
 
   // Add JSON settings for our visualization.
-  drupal_add_js(array('bmore_budget_data_json' => $budget_data), 'setting');
-  drupal_add_js(array('bmore_budget_data_chart_id' => $chart_id), 'setting');
+  drupal_add_js(array('bmore_budget_donut_data_json' => $budget_data), 'setting');
+  drupal_add_js(array('bmore_budget_donut_data_chart_id' => $chart_id), 'setting');
 
+  // Build output for pane.
   $output = '<div id="' . $chart_id . '"></div>';
   $pane->content = $output;
 

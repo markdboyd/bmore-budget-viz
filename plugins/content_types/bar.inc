@@ -6,7 +6,7 @@
  */
 
 $plugin = array(
-  'title' => t('Bar chart - Baltimore operating budget'),
+  'title' => t('Bar chart - Baltimore budget data'),
   'category' => t('Bmore'),
   'description' => t('Renders a bar chart visualization of budget data.'),
   'edit form' => 'bmore_budget_data_bar_viz_edit_form',
@@ -21,7 +21,7 @@ $plugin = array(
  * Admin title callback.
  */
 function bmore_budget_data_bar_viz_admin_title($subtype, $conf, $context = NULL) {
-  $title = 'Bar chart - Baltimore operating budget';
+  $title = 'Bar chart - Baltimore budget data';
 
   if ($conf['override_title'] && !empty($conf['override_title_text'])) {
     $title = filter_xss_admin($conf['override_title_text']);
@@ -42,24 +42,28 @@ function bmore_budget_data_bar_viz_edit_form($form, &$form_state) {
  */
 function bmore_budget_data_bar_viz_render($subtype, $conf, $args, $contexts) {
   $pane = new stdClass();
+  $fiscal_year = $contexts[0]->data;
 
-  $pane->title = $conf['override_title'] ? $conf['override_title_text'] : t('Baltimore Operating Budget - @year', array(
-      '@year' => $appeal_year,
+  $pane->title = $conf['override_title'] ? $conf['override_title_text'] : t('Top 10 Departments by Approved Funding for FY @year', array(
+      '@year' => $fiscal_year,
     )
   );
 
   // Get data for this visualization.
-  // source = https://data.baltimorecity.gov/resource/g5wn-pq7y.json?fiscal_year=2014&$limit=10&$order=approved_amount%20DESC
-  // info = http://dev.socrata.com/docs/queries.html
-  $appeals_summary_data = fts_data_get_appeal_overview_get_summary_data($appeal_year);
-  if (empty($appeals_summary_data)) {
+  $budget_data = bmore_budget_viz_get_data($fiscal_year);
+  if (empty($budget_data)) {
     return '';
   }
 
-  // Options for C3js chart.
+  // Set chart ID.
   $chart_id = 'bmore-budget-bar-chart';
 
-  $output = '<div class="overlay"></div>';
+  // Add JSON settings for our visualization.
+  drupal_add_js(array('bmore_budget_bar_data_json' => $budget_data), 'setting');
+  drupal_add_js(array('bmore_budget_bar_data_chart_id' => $chart_id), 'setting');
+
+  // Build output for pane.
+  $output = '<div id="' . $chart_id . '"></div>';
   $pane->content = $output;
 
   return $pane;

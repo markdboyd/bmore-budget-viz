@@ -26,6 +26,12 @@ function bmore_budget_viz_ctools_plugin_directory($module, $plugin_type) {
   }
 }
 
+/**
+ * Get Baltimore budget data from Socrata API.
+ *
+ * @param  string $fiscal_year
+ * @return array $viz_data
+ */
 function bmore_budget_viz_get_data($fiscal_year) {
   // Info on using API: http://dev.socrata.com/docs/queries.html.
   $data_url = format_string('https://data.baltimorecity.gov/resource/g5wn-pq7y.json?fiscal_year=@fiscal_year&$select=department,sum%28approved_amount%29%20AS%20total&$group=department&$order=total%20DESC&$limit=10', array(

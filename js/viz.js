@@ -1,10 +1,10 @@
 (function ($) {
 
   // Donut chart of budget data.
-  Drupal.behaviors.bmore_budget_donut = {
+  Drupal.behaviors.bmore_budget_donut_chart = {
     attach: function (context, settings) {
-      var chart_id = settings.bmore_budget_data_chart_id;
-      var chart_json = settings.bmore_budget_data_json;
+      var chart_id = settings.bmore_budget_donut_data_chart_id;
+      var chart_json = settings.bmore_budget_donut_data_json;
 
       if (chart_id && chart_json) {
         chart_id = '#' + chart_id;
@@ -16,6 +16,34 @@
 
         $(chart_id, context).once('bmore-budget-donut-chart', function (){
           var chart = generate_donut_chart(chart_id, chart_json, additional_opts);
+        });
+      }
+    }
+  };
+
+  // Bar chart of budget data.
+  Drupal.behaviors.bmore_budget_bar_chart = {
+    attach: function (context, settings) {
+      var chart_id = settings.bmore_budget_bar_data_chart_id;
+      var chart_json = settings.bmore_budget_bar_data_json;
+
+      if (chart_id && chart_json) {
+        chart_id = '#' + chart_id;
+
+        var department_names = Object.keys(chart_json);
+
+        var additional_opts = {
+          axis: {
+            rotated: true
+          }
+        };
+
+        console.log(JSON.stringify(chart_json));
+
+        // var additional_opts = general_bar_chart_opts(chart_json);
+
+        $(chart_id, context).once('bmore-budget-bar-chart', function (){
+          var chart = generate_bar_chart(chart_id, chart_json, additional_opts);
         });
       }
     }
