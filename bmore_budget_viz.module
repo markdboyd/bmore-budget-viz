@@ -33,9 +33,15 @@ function bmore_budget_viz_get_data($fiscal_year) {
     )
   );
 
-  $response = file_get_contents($data_url);
-  $response_data = json_decode($response);
   $viz_data = array();
+  $response = drupal_http_request($data_url);
+
+  if ($response->code != 200) {
+    return $viz_data;
+  }
+
+
+  $response_data = json_decode($response->data);
 
   foreach ($response_data as $idx => $response) {
     $department = $response->department;
