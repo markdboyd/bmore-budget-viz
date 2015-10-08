@@ -33,26 +33,50 @@ function bmore_budget_viz_ctools_plugin_directory($module, $plugin_type) {
  * @return array $viz_data
  */
 function bmore_budget_viz_get_data($fiscal_year) {
-  // Info on using API: http://dev.socrata.com/docs/queries.html.
-  $data_url = format_string('https://data.baltimorecity.gov/resource/g5wn-pq7y.json?fiscal_year=@fiscal_year&$select=department,sum%28approved_amount%29%20AS%20total&$group=department&$order=total%20DESC&$limit=10', array(
-      '@fiscal_year' => $fiscal_year
-    )
-  );
+  $response_data = drupal_static(__FUNCTION__ . '_' . $fiscal_year);
 
-  $viz_data = array();
-  $response = drupal_http_request($data_url);
+  if (!isset($response_data)) {
+    // Info on using API: http://dev.socrata.com/docs/queries.html.
+    $data_url = format_string('https://data.baltimorecity.gov/resource/g5wn-pq7y.json?fiscal_year=@fiscal_year&$select=department,sum%28approved_amount%29%20AS%20total&$group=department&$order=total%20DESC&$limit=10', array(
+        '@fiscal_year' => $fiscal_year
+      )
+    );
 
-  if ($response->code != 200) {
-    if (!empty($response->error)) {
-      drupal_set_message(t('Could not load data, Error: @error',
-        array('@error' => $response->error)
-      ), 'error');
+    $response = drupal_http_request($data_url);
+
+    if ($response->code != 200) {
+      if (!empty($response->error)) {
+        drupal_set_message(t('Could not load data, Error: @error',
+          array('@error' => $response->error)
+        ), 'error');
+      }
+
+      return null;
     }
 
-    return $viz_data;
+    $response_data = json_decode($response->data);
   }
 
-  $response_data = json_decode($response->data);
+  return $response_data;
+}
+
+function bmore_budget_viz_get_bar_chart_data($fiscal_year) {
+  $response_data = bmore_budget_viz_get_data($fiscal_year);
+  $viz_data = array();
+
+  foreach ($response_data as $idx => $response) {
+    $department = $response->department;
+    $total = $response->total;
+    $viz_data['total'][] = $total;
+    $viz_data['x'][] = $department;
+  }
+
+  return $viz_data;
+}
+
+function bmore_budget_viz_get_donut_chart_data($fiscal_year) {
+  $response_data = bmore_budget_viz_get_data($fiscal_year);
+  $viz_data = array();
 
   foreach ($response_data as $idx => $response) {
     $department = $response->department;

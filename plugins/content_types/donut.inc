@@ -51,8 +51,8 @@ function bmore_budget_data_donut_viz_render($subtype, $conf, $args, $contexts) {
   );
 
   // Get data for this visualization.
-  $budget_data = bmore_budget_viz_get_data($fiscal_year);
-  if (empty($budget_data)) {
+  $viz_data = bmore_budget_viz_get_donut_chart_data($fiscal_year);
+  if (empty($viz_data)) {
     return '';
   }
 
@@ -60,7 +60,7 @@ function bmore_budget_data_donut_viz_render($subtype, $conf, $args, $contexts) {
   $chart_id = 'bmore-budget-donut-chart';
 
   // Add JSON settings for our visualization.
-  drupal_add_js(array('bmore_budget_donut_data_json' => $budget_data), 'setting');
+  drupal_add_js(array('bmore_budget_donut_data_json' => $viz_data), 'setting');
   drupal_add_js(array('bmore_budget_donut_data_chart_id' => $chart_id), 'setting');
 
   // Build output for pane.

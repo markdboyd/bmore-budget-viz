@@ -33,8 +33,25 @@
         var department_names = Object.keys(chart_json);
 
         var additional_opts = {
+          data: {
+            type: 'json',
+            json: chart_json,
+            x: 'x',
+            axes: {
+              'total': 'y'
+            },
+            colors: {
+              'total': '#000',
+            },
+          },
           axis: {
-            rotated: true
+            rotated: true,
+            x: {
+              tick: {
+                culling: false
+              },
+              type: 'category'
+            }
           }
         };
 
