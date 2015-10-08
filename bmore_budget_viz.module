@@ -37,9 +37,14 @@ function bmore_budget_viz_get_data($fiscal_year) {
   $response = drupal_http_request($data_url);
 
   if ($response->code != 200) {
+    if (!empty($response->error)) {
+      drupal_set_message(t('Could not load data, Error: @error',
+        array('@error' => $response->error)
+      ), 'error');
+    }
+
     return $viz_data;
   }
-
 
   $response_data = json_decode($response->data);
 
