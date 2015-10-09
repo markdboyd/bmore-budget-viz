@@ -60,6 +60,12 @@ function bmore_budget_viz_get_data($fiscal_year) {
   return $response_data;
 }
 
+/**
+ * Get bar chart data.
+ *
+ * Manipulate data from response into format expected
+ * by bar chart.
+ */
 function bmore_budget_viz_get_bar_chart_data($fiscal_year) {
   $response_data = bmore_budget_viz_get_data($fiscal_year);
   $viz_data = array();
@@ -74,6 +80,12 @@ function bmore_budget_viz_get_bar_chart_data($fiscal_year) {
   return $viz_data;
 }
 
+/**
+ * Get donut chart data.
+ *
+ * Manipulate data from response into format expected
+ * by donut chart.
+ */
 function bmore_budget_viz_get_donut_chart_data($fiscal_year) {
   $response_data = bmore_budget_viz_get_data($fiscal_year);
   $viz_data = array();
