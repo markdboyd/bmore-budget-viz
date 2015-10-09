@@ -7,4 +7,3 @@ project = bmore_budget_viz
 dependencies[] = ctools
 dependencies[] = panels
 dependencies[] = libraries
-dependencies[] = page_manager
