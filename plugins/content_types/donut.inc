@@ -45,7 +45,7 @@ function bmore_budget_data_donut_viz_render($subtype, $conf, $args, $contexts) {
   $pane = new stdClass();
   $fiscal_year = $contexts[0]->data;
 
-  $pane->title = $conf['override_title'] ? $conf['override_title_text'] : t('Top 10 Departments by Approved Funding for FY @year', array(
+  $pane->title = $conf['override_title'] ? $conf['override_title_text'] : t('Donut chart - Total Approved Funding for Top 10 Departments in FY @year', array(
       '@year' => $fiscal_year,
     )
   );
